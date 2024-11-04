@@ -4,7 +4,7 @@ let envContent;
 switch (env) {
   case "production":
     envContent = `
-        REACT_APP_API_URL=https://api.production.com
+        REACT_APP_API_URL=https://api.production.thanh
         REACT_APP_SECRET_KEY=prod-secret-key
         `;
     break;
