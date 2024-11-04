@@ -5,6 +5,7 @@ switch (env) {
   case "production":
     envContent = `
         REACT_APP_API_URL=https://api.production.toan
+        REACT_APP_API_URL=https://api.production.thanh2
         REACT_APP_SECRET_KEY=prod-secret-key
         `;
     break;
