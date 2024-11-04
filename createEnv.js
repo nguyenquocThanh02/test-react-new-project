@@ -19,6 +19,7 @@ switch (env) {
     envContent = `
         REACT_APP_API_URL=http://localhost:5000 
         REACT_APP_SECRET_KEY=dev-secret-key
+        REACT_APP_SECRET_KEY=dev-secret-key
         `;
     break;
 }
