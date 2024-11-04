@@ -22,6 +22,7 @@ function App() {
         />
         <h2>Đăng ký</h2>
         <h3>Thánh thêm vô</h3>
+        <h2>Profile</h2>
       </div>
     </>
   );
