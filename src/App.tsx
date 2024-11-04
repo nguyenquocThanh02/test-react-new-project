@@ -20,6 +20,7 @@ function App() {
           alt="jhsdakjf"
           loading="eager"
         />
+        <h2>Đăng ký</h2>
       </div>
     </>
   );
