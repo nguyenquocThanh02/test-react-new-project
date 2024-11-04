@@ -10,13 +10,6 @@ function App() {
           src={
             "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"
           }
-          alt="dkfls"
-          loading="eager"
-        />
-        <img
-          src={
-            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"
-          }
           alt="jhsdakjf"
           loading="eager"
         />
@@ -26,6 +19,7 @@ function App() {
         <h2>Profile</h2>
         <h2>Toàn thêm 2</h2>
         <h2>Toàn thêm 111</h2>
+        <h2>Toàn thêm 222</h2>
       </div>
     </>
   );
