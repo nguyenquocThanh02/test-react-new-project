@@ -22,6 +22,7 @@ function App() {
         />
         <h2>Đăng ký</h2>
         <h3>Thánh thêm vô</h3>
+        <h4>Thánh lần 2</h4>
         <h2>Profile</h2>
         <h2>Toàn thêm</h2>
       </div>
