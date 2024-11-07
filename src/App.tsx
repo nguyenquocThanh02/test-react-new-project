@@ -3,6 +3,7 @@ import TestTodo from "./pages/testTodo";
 import UploadImgPage from "./pages/UploadImg.page";
 import MainLayout from "./layouts/MainLayout/MainLayout";
 import { Route } from "react-router-dom";
+import PaginationRouter from "./pages/pagination-router/test";
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
       </Route>
       <Route path="/todo">
         <TestTodo />
+      </Route>
+      <Route path="/pagination-router">
+        <PaginationRouter />
       </Route>
       {/* <div className="text-red-600">
         <Button>Click me</Button>
