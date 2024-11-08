@@ -70,7 +70,7 @@ const UploadImgPage = () => {
   //   const handleUpload = async () => {
   //     try {
   //       const presignedUrls = await Promise.all(
-  //         selectedFiles.map((file) => getPresignedUrl(file.name, file.type))
+  //         selectedFiles.map((file) => getPresignedUrl(file.name, file.type)) //for
   //       );
   //       const uploadPromises = selectedFiles.map((file, index) => {
   //         return axios.put(presignedUrls[index], file, {
@@ -90,7 +90,9 @@ const UploadImgPage = () => {
   // Hàm submit form
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Files submitted:", values);
-    console.log("Selected files: ", selectedFiles);
+    console.log("Selected files: ", selectedFiles[0]);
+    const blob = new Blob([selectedFiles[0]], { type: selectedFiles[0].type });
+    console.log("blob: ", blob);
 
     // const result = await handleUpload();
 

@@ -1,15 +1,17 @@
 import "./App.css";
 import TestTodo from "./pages/testTodo";
-import UploadImgPage from "./pages/UploadImg.page";
 import MainLayout from "./layouts/MainLayout/MainLayout";
 import { Route } from "react-router-dom";
 import PaginationRouter from "./pages/pagination-router/test";
+import UploadMultipart from "./pages/upload-multipart/UploadMultipart";
+import UploadMultipartMultifile from "./pages/upload-multipart/UploadMultiFileMultiPart";
+import UploadImg from "./pages/UploadImg.page";
 
 function App() {
   return (
     <MainLayout>
       <Route path="/upload">
-        <UploadImgPage />
+        <UploadImg />
       </Route>
       <Route path="/todo">
         <TestTodo />
@@ -17,30 +19,13 @@ function App() {
       <Route path="/pagination-router">
         <PaginationRouter />
       </Route>
-      {/* <div className="text-red-600">
-        <Button>Click me</Button>
-        <img
-          src={
-            "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"
-          }
-          alt="jhsdakjf"
-          loading="eager"
-        />
-        <h2>Đăng ký</h2>
-        <h3>Toàn thêm 222</h3>
-        <h3>Thánh thêm vô</h3>
-        <h2>Profile</h2>
-        <h2>Toàn thêm 2</h2>
-        <h2>Toàn thêm 111</h2>
-        <h2>Toàn thêm 222</h2> */}
 
-      {/* complete */}
-      {/* <UploadImgPage /> */}
-
-      {/* test todo handler */}
-      {/* <TestTodo /> */}
-
-      {/* </div> */}
+      <Route path="/multipart">
+        <UploadMultipart />
+      </Route>
+      <Route path="/multipart-multifile">
+        <UploadMultipartMultifile />
+      </Route>
     </MainLayout>
   );
 }

@@ -1,3 +1,5 @@
+import { buildQueryString } from "@/service";
+import { log } from "console";
 import { Link } from "react-router-dom";
 
 type typeFCHandler = (arr: number[]) => number[];
@@ -17,12 +19,14 @@ const TestTodo = () => {
 
   test();
 
-  // const a = queryString;
-  // console.log("query: ", a);
-  // const location = useLocation();
+  const a = buildQueryString({
+    limit: 1,
+  });
+  console.log("query: ", a);
+
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  // Giả sử chúng ta muốn thêm "search" và "page" vào query string hiện tại
   queryParams.set("search", "query");
   queryParams.set("page", "2");
 
