@@ -8,14 +8,15 @@ import UploadImg from "./pages/UploadImg.page";
 import { useEffect } from "react";
 import PaginationPage from "./pages/pagination-router/Pagination";
 import LoginPage from "./pages/auth/login/Login.page";
-import { useProfileHook } from "./hooks/useProfile.hook";
-
-export type Permission = {
+import { useQuery } from "@tanstack/react-query";
+import { getProfile } from "./service";
+import ScrollTablePage from "./pages/scrollTable/ScrollTable.page";
+interface Permission {
   name: string;
   code: string;
   ordering: number;
   isEnable: boolean;
-};
+}
 
 interface ProtectedRouteProps extends RouterProps {
   component: React.ComponentType<any>;
@@ -47,9 +48,13 @@ function App() {
   }, []);
 
   // xử lý phân quyền, gọi permission từ be
-  const profile = useProfileHook();
+  const permission = useQuery({
+    queryKey: ["permissions"],
+    queryFn: () => getProfile(),
+    staleTime: 5 * 60 * 1000,
+  });
 
-  const data = profile.data?.permissions || [];
+  const data = permission.data?.permissions || [];
   console.log("🚀 ~ data ~ form app:", data);
 
   const hasPermission = (permissionCode: string) => {
@@ -116,6 +121,10 @@ function App() {
       </Route>
       <Route path="/pagination-router">
         <PaginationPage />
+      </Route>
+
+      <Route path="/scroll-table">
+        <ScrollTablePage />
       </Route>
 
       <Route path="/multipart">
