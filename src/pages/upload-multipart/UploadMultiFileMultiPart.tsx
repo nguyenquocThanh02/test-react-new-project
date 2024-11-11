@@ -13,8 +13,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
 import { Progress } from "@/components/ui/progress";
+import { progressStore } from "@/store/progress.store";
+import { uploadFile } from "@/hooks";
+import { uploadMultipart } from "@/hooks/uploadMultipartFC.hook";
 
 const formSchema = z.object({
   file: z
@@ -28,17 +30,12 @@ const formSchema = z.object({
   username: z.string(),
 });
 
-type partType = {
-  etag: string;
-  PartNumber: number;
-};
-
 const UploadMultipartMultifile = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [progress, setProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState(false);
   const [controller, setController] = useState<AbortController | null>(null);
 
+  const { progress, setTotalSize } = progressStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -72,9 +69,11 @@ const UploadMultipartMultifile = () => {
     setController(newController);
     const signal = newController.signal;
 
-    const totalSize = selectedFiles.reduce((acc, file) => acc + file.size, 0);
-    let uploadSize = 0;
-
+    const newTotalSize = selectedFiles.reduce(
+      (acc, file) => acc + file.size,
+      0
+    );
+    setTotalSize(newTotalSize);
     setIsUploading(true);
 
     for (const file of selectedFiles) {
@@ -82,101 +81,9 @@ const UploadMultipartMultifile = () => {
 
       try {
         if (file.size < 10000000) {
-          const response = await axios.post(
-            "https://BE/generate-single-presigned-url",
-            { fileName: file.name }
-          );
-          const { url } = response.data;
-
-          const uploadResponse = await axios.put(url, file, {
-            headers: {
-              "Content-Type": file.type,
-            },
-            onUploadProgress: (event) => {
-              if (event.total) {
-                uploadSize += event.loaded;
-                setProgress(Math.round(uploadSize / totalSize) * 100);
-              }
-            },
-            signal,
-          });
-
-          console.log("🚀 ~ handleUpload ~ uploadResponse:", uploadResponse);
+          await uploadFile(file, signal);
         } else {
-          const response = await axios.post(
-            "https://BE/start-multipart-upload",
-            {
-              fileName: file.name,
-              contentType: file.type,
-            },
-            { signal }
-          );
-
-          const { uploadId } = response.data;
-          console.log("🚀 ~ onSubmit ~ uploadId:", uploadId);
-
-          const totalSize = file.size;
-          const chunkSize = 10000000;
-          const numChunks = Math.ceil(totalSize / chunkSize);
-
-          const presignedUrls_response = await axios.post(
-            "https://BE/generate-presigned-url",
-            {
-              fileName: file.name,
-              uploadId: uploadId,
-              partNumbers: numChunks,
-            },
-            { signal }
-          );
-
-          const presigned_urls = presignedUrls_response?.data?.presignedUrls;
-          console.log("🚀 ~ onSubmit ~ presigned_urls:", presigned_urls);
-
-          const parts: partType[] = [];
-          const uploadPromises = [];
-
-          for (let i = 0; i < numChunks; i++) {
-            const start = i * chunkSize;
-            const end = Math.min(start + chunkSize, totalSize);
-            const chunk = file.slice(start, end);
-            const presignedUrl = presigned_urls[i];
-
-            uploadPromises.push(
-              axios.put(presignedUrl, chunk, {
-                headers: {
-                  "Content-Type": file.type,
-                },
-                onUploadProgress: (event) => {
-                  if (event.total) {
-                    uploadSize += event.loaded;
-                    setProgress(Math.round(uploadSize / totalSize) * 100);
-                  }
-                },
-              })
-            );
-          }
-
-          const uploadResponses = await Promise.all(uploadPromises);
-
-          uploadResponses.forEach((response, i) => {
-            parts.push({
-              etag: response.headers.etag,
-              PartNumber: i + 1,
-            });
-          });
-
-          console.log("Parts- ", parts);
-
-          const complete_upload = await axios.post(
-            "https://BE/complete-multipart-upload",
-            {
-              fileName: file.name,
-              uploadId: uploadId,
-              parts: parts,
-            }
-          );
-
-          console.log("Complete upload- ", complete_upload.data);
+          await uploadMultipart(file, signal);
         }
       } catch (fileError) {
         console.error("File upload failed", fileError);

@@ -1,6 +1,6 @@
 import { buildQueryString } from "@/service";
-import { log } from "console";
-import { Link } from "react-router-dom";
+import { FilterOperationType } from "@chax-at/prisma-filter-common";
+import { Link, useLocation } from "react-router-dom";
 
 type typeFCHandler = (arr: number[]) => number[];
 
@@ -19,10 +19,34 @@ const TestTodo = () => {
 
   test();
 
-  const a = buildQueryString({
-    limit: 1,
+  const query = buildQueryString({
+    limit: 10,
+    offset: 0,
+    filter: [
+      {
+        field: "age",
+        type: FilterOperationType.Eq,
+        value: 18,
+      },
+      {
+        field: "status",
+        type: FilterOperationType.Eq,
+        value: "active",
+      },
+    ],
+    order: [
+      {
+        field: "name",
+        dir: "asc",
+      },
+      {
+        field: "age",
+        dir: "desc",
+      },
+    ],
   });
-  console.log("query: ", a);
+
+  console.log("query: ", query);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);

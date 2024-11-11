@@ -3,7 +3,6 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -16,12 +15,11 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
-import { count } from "console";
 
 type Payment = {
   id: string;
   amount: number;
-  status: "pending" | "processing" | "success" | "failed";
+  status: "pending" | "processing" | "success" | "failed" | "completed";
   email: string;
 };
 const PaginationRouter = () => {
@@ -38,7 +36,68 @@ const PaginationRouter = () => {
       status: "processing",
       email: "example@gmail.com",
     },
+    {
+      id: "4c5e8321",
+      amount: 150,
+      status: "pending",
+      email: "john.doe@example.com",
+    },
+    {
+      id: "31b45ed6",
+      amount: 200,
+      status: "pending",
+      email: "alice.smith@example.com",
+    },
+    {
+      id: "d71fc72a",
+      amount: 250,
+      status: "completed",
+      email: "bob.jones@example.com",
+    },
+    {
+      id: "b7ff4399",
+      amount: 75,
+      status: "failed",
+      email: "carol.white@example.com",
+    },
+    {
+      id: "f98403d5",
+      amount: 300,
+      status: "processing",
+      email: "david.brown@example.com",
+    },
+    {
+      id: "d091a2bc",
+      amount: 180,
+      status: "pending",
+      email: "emma.green@example.com",
+    },
+    {
+      id: "64ab9e8f",
+      amount: 95,
+      status: "completed",
+      email: "frank.miller@example.com",
+    },
+    {
+      id: "91c3461a",
+      amount: 220,
+      status: "failed",
+      email: "grace.johnson@example.com",
+    },
+    {
+      id: "6a3f5b9d",
+      amount: 160,
+      status: "processing",
+      email: "hannah.white@example.com",
+    },
+    {
+      id: "7b08fe54",
+      amount: 110,
+      status: "pending",
+      email: "isla.carter@example.com",
+    },
   ];
+
   const columns: ColumnDef<Payment>[] = [
     {
       accessorKey: "id",
@@ -57,18 +116,19 @@ const PaginationRouter = () => {
     },
     {
       accessorKey: "amount",
-      header: ({ column }) => {
-        const handelSortAmount = () => {
-          console.log();
-          column.toggleSorting(column.getIsSorted() === "asc");
-        };
-        return (
-          <Button onClick={handelSortAmount}>
-            Amount
-            <ArrowUpDown />
-          </Button>
-        );
-      },
+      // header: ({ column }) => {
+      //   const handelSortAmount = () => {
+      //     console.log();
+      //     column.toggleSorting(column.getIsSorted() === "asc");
+      //   };
+      //   return (
+      //     <Button onClick={handelSortAmount}>
+      //       Amount
+      //       <ArrowUpDown />
+      //     </Button>
+      //   );
+      // },
+      header: "Amount",
       cell: ({ row }) => {
         console.log("check:", row.original);
         return <div>{row.getValue("amount")} times</div>;
@@ -78,12 +138,8 @@ const PaginationRouter = () => {
   const table = useReactTable({
     data,
     columns,
-    // getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    // state: {
-    //   sorting,
-    // },
   });
 
   table.getHeaderGroups().map((header) => {
