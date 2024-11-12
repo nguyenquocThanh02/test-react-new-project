@@ -10,18 +10,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useCreateForm } from "@/hooks/useCreateForm.hook";
+import { emailValidator, requiredString } from "@/rules";
 import { PhoneInput } from "@/components/ui/phone-input";
-import { UseFormReturn } from "react-hook-form";
-import { formSchema, typeFormValue } from "./Form.page";
+import { typeFormValue } from "./Form.page";
 
-const FormComponent: React.FC<{
-  data: typeFormValue;
-  form: UseFormReturn<z.infer<typeof formSchema>>;
-}> = ({ data, form }) => {
+const formSchema = z.object({
+  firstName: requiredString("First name is required"),
+  lastName: requiredString("Last name is required"),
+  email: emailValidator(),
+  phone: requiredString("Phone is required"),
+});
+
+const Form2Component: React.FC<{ data: typeFormValue }> = ({ data }) => {
+  const form = useCreateForm(formSchema, {
+    firstName: data.firstName || "",
+    lastName: data.lastName || "",
+    email: data.email || "",
+    phone: data.phone || "",
+  });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
-  console.log(data);
   return (
     <div>
       <Form {...form}>
@@ -85,4 +96,4 @@ const FormComponent: React.FC<{
   );
 };
 
-export default FormComponent;
+export default Form2Component;

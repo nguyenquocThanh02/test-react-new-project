@@ -13,6 +13,7 @@ import { getProfile } from "./service";
 import ScrollTablePage from "./pages/scrollTable/ScrollTable.page";
 import FormPage from "./pages/form/Form.page";
 import AvatarComponent from "./pages/avatar/avatar.component";
+import Form2Page from "./pages/form/Form2.page";
 interface Permission {
   name: string;
   code: string;
@@ -126,6 +127,9 @@ function App() {
       </Route>
       <Route path="/form">
         <FormPage />
+      </Route>
+      <Route path="/form2">
+        <Form2Page />
       </Route>
       <Route path="/avatar">
         <AvatarComponent />

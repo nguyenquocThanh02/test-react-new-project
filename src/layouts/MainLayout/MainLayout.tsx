@@ -33,6 +33,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <NavLink to={"/todo"}>Todo</NavLink>
         <NavLink to={"/pagination-router"}>Pagination</NavLink>
         <NavLink to={"/form"}>Form</NavLink>
+        <NavLink to={"/form2"}>Form2</NavLink>
         <NavLink to={"/avatar"}>Avatar</NavLink>
         <NavLink to={"/multipart"}>Multipart</NavLink>
         <NavLink to={"/scroll-table"}>Scroll table</NavLink>
